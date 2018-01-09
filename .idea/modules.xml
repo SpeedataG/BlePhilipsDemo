@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BlePhilipsDemo.iml" filepath="$PROJECT_DIR$/BlePhilipsDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/BlePhilipsDemo.iml" filepath="$PROJECT_DIR$/.idea/BlePhilipsDemo.iml" />
+      <module fileurl="file://D:\SpeedataDemo\BlePhilipsDemo\BlePhilipsDemo.iml" filepath="D:\SpeedataDemo\BlePhilipsDemo\BlePhilipsDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/serverclient/serverclient.iml" filepath="$PROJECT_DIR$/serverclient/serverclient.iml" />
     </modules>

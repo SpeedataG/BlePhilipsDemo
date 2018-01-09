@@ -1,19 +1,11 @@
 package com.example.mybloothserver;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.UUID;
-
-import android.os.Bundle;
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
-import android.os.SystemClock;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,6 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mybloothserver.base.BaseActivity;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.UUID;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private EditText mEditText;
@@ -85,9 +82,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void run() {
                 if (state) {
-                    tvState.setText("已链接" + transferSocket.getRemoteDevice());
+                    initBle(true);
+                    tvState.setText("蓝牙已链接" + transferSocket.getRemoteDevice());
                 } else {
-                    tvState.setText("未链接");
+                    tvState.setText("蓝牙未链接");
+                    initBle(false);
 //                    disConnect();
                 }
             }

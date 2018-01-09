@@ -43,7 +43,7 @@ public class BaseActivity extends Activity {
     protected TextView mBarTitle;
     private CustomProgressDialog mProgressDialog;
     protected ImageView mBarLeft;
-//    public MyApp myApp;
+    //    public MyApp myApp;
     public MyLogger logger = MyLogger.jLog();
 
     @Override
@@ -78,8 +78,7 @@ public class BaseActivity extends Activity {
         if (leftVis) {
             imgExit.setVisibility(View.VISIBLE);
             imgExit.setImageDrawable(getResources().getDrawable(R.drawable.icon_back));
-        }
-        else
+        } else
             imgExit.setVisibility(View.INVISIBLE);
         imgExit.setOnClickListener(lis);
 
@@ -100,5 +99,13 @@ public class BaseActivity extends Activity {
         mBarLeft.setVisibility(left == 0 ? View.GONE : View.VISIBLE);
     }
 
+    public void initBle(boolean isBle) {
+        ImageView StateBle = (ImageView) findViewById(R.id.imag_ble);
+        if (isBle) {
+            StateBle.setImageDrawable(getResources().getDrawable(R.drawable.ble_true));
+        } else {
+            StateBle.setImageDrawable(getResources().getDrawable(R.drawable.ble_false));
+        }
+    }
 
 }

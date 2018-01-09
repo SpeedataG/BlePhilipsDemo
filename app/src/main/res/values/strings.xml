@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BluetoothClient</string>
+    <drawable name="clr_normal">#d2d0cf</drawable>
+    <drawable name="clr_pressed">#19a400</drawable>
 </resources>

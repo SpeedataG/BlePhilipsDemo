@@ -25,20 +25,21 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="未连接" />
+                android:text="蓝牙未连接" />
 
             <CheckBox
                 android:id="@+id/ck"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="显示心跳" />
+                android:text="显示心跳"
+                android:visibility="gone" />
         </LinearLayout>
 
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="150dp"
-            android:src="@drawable/icon_background" />
+            android:src="@drawable/background" />
 
         <EditText
             android:id="@+id/et_id"
@@ -62,29 +63,30 @@
 
             <Button
                 android:id="@+id/btn1"
+                style="@style/TextStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/TextStyle"
 
                 android:background="@drawable/button_bc_selector"
                 android:text="TEST1" />
 
             <Button
                 android:id="@+id/btn2"
+                style="@style/TextStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/TextStyle"
 
                 android:background="@drawable/button_bc_selector"
                 android:text="TEST2" />
+
             <Button
                 android:id="@+id/btn3"
+                style="@style/TextStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/TextStyle"
 
                 android:background="@drawable/button_bc_selector"
                 android:text="TEST3" />
@@ -98,28 +100,29 @@
 
             <Button
                 android:id="@+id/btn4"
+                style="@style/TextStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/TextStyle"
 
                 android:background="@drawable/button_bc_selector"
                 android:text="TEST4" />
 
             <Button
                 android:id="@+id/btn5"
+                style="@style/TextStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/TextStyle"
                 android:background="@drawable/button_bc_selector"
                 android:text="TEST5" />
+
             <Button
                 android:id="@+id/btn6"
+                style="@style/TextStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/TextStyle"
                 android:background="@drawable/button_bc_selector"
                 android:text="TEST6" />
         </LinearLayout>
@@ -127,13 +130,19 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="接收区域：" />
+            android:text="接收区域："
+            android:textColor="@color/color_black"
+            android:textSize="20sp" />
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_id"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            <TextView
+                android:id="@+id/tv_id"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </ScrollView>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

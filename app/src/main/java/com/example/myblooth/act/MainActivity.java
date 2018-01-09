@@ -1,16 +1,19 @@
 package com.example.myblooth.act;
 
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.text.TextUtils;
-
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.myblooth.MyApp;
 import com.example.myblooth.R;
@@ -19,57 +22,133 @@ import com.example.myblooth.callback.MesCallBack;
 import com.example.myblooth.ui.BluetoothDeviceDialiger;
 import com.example.myblooth.utils.MyLogger;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, TextView.OnEditorActionListener {
     private MyLogger logger = MyLogger.jLog();
-
-    private EditText mEditText;
+    private EditText etdHeight;
     private TextView tv;
-
-    FloatingActionButton fbtn;
-    FloatingActionButton fbtnClear;
-    FloatingActionButton fbtnDisconnect;
+    private FloatingActionButton fbtn;
+    private FloatingActionButton fbtnClear;
+    private FloatingActionButton fbtnDisconnect;
     private MyApp app;
-    BluetoothDeviceDialiger dialiger;
-    private Button btnSend;
+    private BluetoothDeviceDialiger dialiger;
     private TextView tvState;
-    private CheckBox checkBox;
-    private Button btn1, btn2, btn3, btn4, btn5, btn6;
+    private SeekBar seekBar;
+    private Button btnRun, btnStop, btnTest;
+    private RadioButton rb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initView();
+        //01 00 B4 01 01 B6 99
+        byte tb[] = {0x01, 0x00, (byte) 0xB4, 0x01, 0x01};
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == fbtnClear) {
+            tv.setText("");
+        } else if (view == fbtnDisconnect) {
+            app.disConnect();
+            fbtnDisconnect.setVisibility(View.INVISIBLE);
+//            tvState.setText("未链接");
+        } else if (view == btnRun) {
+            btnRun.setTextColor(Color.BLUE);
+            btnStop.setTextColor(Color.BLACK);
+//            handler.postDelayed(runnable, 500);
+            assembleDsatas("01");
+
+        } else if (view == btnStop) {
+//            if (!flag) {
+//                flag = true;
+            btnStop.setTextColor(Color.BLUE);
+            btnRun.setTextColor(Color.BLACK);
+            assembleDsatas("02");
+//            }
+
+            handler.removeCallbacks(runnable);
+
+        } else if (view == btnTest) {
+
+//            assembleDsatas();
+        }
+
+    }
+
+    private void assembleDsatas(String state) {
+        //例：主机发送（0x01）身高为180cm（0x00 0xB4），部位为head（0x01），运行（0x01），；
+        //所以发送的数据为：0x01 0x00 0xB4 0x01  0x01 0xB6 0x99，
+        String s = Integer.toHexString(height);
+        String cmds = "Please select height and position";
+        if (rb != null) {
+            if (rb.getText().equals("Head")) {
+                cmds = "0100" + s + "01" + state;
+            } else if (rb.getText().equals("Stomatch")) {
+                cmds = "0100" + s + "02" + state;
+            } else if (rb.getText().equals("Butt")) {
+                cmds = "0100" + s + "03" + state;
+            } else if (rb.getText().equals("Foot")) {
+                cmds = "0100" + s + "04" + state;
+            }
+            app.sendMessageByte(HexString2Bytes(cmds));
+        } else {
+            app.sendMessage(cmds);
+        }
+    }
+
+    private Handler handler = new Handler();
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+//            assembleDsatas();
+            handler.postDelayed(this, 500);
+
+        }
+    };
+    private int height = 100;
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        height = 100 + i;
+        etdHeight.setText(height + "");
+    }
+
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    private void initView() {
         app = (MyApp) getApplication();
-        checkBox = findViewById(R.id.ck);
-        btn1 = findViewById(R.id.btn1);
-        btn2 = findViewById(R.id.btn2);
-        btn3 = findViewById(R.id.btn3);
-        btn4 = findViewById(R.id.btn4);
-        btn5 = findViewById(R.id.btn5);
-        btn6 = findViewById(R.id.btn6);
-        btn1.setOnClickListener(this);
-        btn2.setOnClickListener(this);
-        btn3.setOnClickListener(this);
-        btn4.setOnClickListener(this);
-        btn5.setOnClickListener(this);
-        btn6.setOnClickListener(this);
-        updateState(false);
+        btnRun = findViewById(R.id.btn_run);
+        btnStop = findViewById(R.id.btn_stop);
+        btnStop.setTextColor(Color.BLUE);
+        btnTest = findViewById(R.id.btn_test);
+        seekBar = findViewById(R.id.seek_bar);
+        etdHeight = findViewById(R.id.etd_height);
+        etdHeight.setOnEditorActionListener(this);
+        seekBar.setOnSeekBarChangeListener(this);
+        btnStop.setOnClickListener(this);
+        btnTest.setOnClickListener(this);
+        btnRun.setOnClickListener(this);
+        etdHeight.setText(height + "");
         app.setMesCallBack(new MesCallBack() {
             @Override
             public void ReceMsg(final String msg) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (checkBox.isChecked())
+                        if (msg.equals("heart"))
+                            return;
+                        else
                             tv.append(msg);
-                        else {
-                            if (msg.equals("heart"))
-                                return;
-                            else
-                                tv.append(msg);
-
-                        }
-
                     }
                 });
             }
@@ -80,14 +159,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void run() {
 //                        btnSend.setEnabled(isConnect);
-                        updateState(isConnect);
                         if (isConnect) {
                             if (dialiger.isShowing())
                                 dialiger.dismiss();
-                            tvState.setText("已链接" + app.getDevice());
+                            initBle(true);
+                            tvState.setText("蓝牙已链接：" + app.getDevice());
                             fbtnDisconnect.setVisibility(View.VISIBLE);
                         } else {
-                            tvState.setText("未链接");
+                            initBle(false);
+                            tvState.setText("蓝牙未链接：");
                             fbtnDisconnect.setVisibility(View.INVISIBLE);
                         }
 //                        if (dialiger.isShowing()) {
@@ -114,10 +194,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             }
         });
-        mEditText = (EditText) findViewById(R.id.et_id);
         tvState = findViewById(R.id.tv_state);
-        btnSend = findViewById(R.id.btn_send);
-        btnSend.setEnabled(false);
         fbtn = findViewById(R.id.fab);
         fbtnClear = findViewById(R.id.fab_clear);
         fbtnDisconnect = findViewById(R.id.fab_disconnect);
@@ -133,8 +210,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             }
         });
-        tv = (TextView) findViewById(R.id.tv_id);
-//        initView();
+        tv = findViewById(R.id.tv_id);
         initTitle("飞利浦-发送端", false, null, 0);
 //        setRightNavigation(R.drawable.icon_back, new View.OnClickListener() {
 //            @Override
@@ -142,55 +218,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //                tv.setText("");
 //            }
 //        });
-    }
-
-    private void updateState(boolean state) {
-        btn1.setEnabled(state);
-        btn2.setEnabled(state);
-        btn3.setEnabled(state);
-        btn4.setEnabled(state);
-    }
-
-    public void click(View view) {
-        String str = mEditText.getText().toString();
-        if (!TextUtils.isEmpty(str)) {
-            app.sendMessage(str);
-        } else {
-            Toast.makeText(this, "信息不能为空", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
+        RadioGroup radioGroup = findViewById(R.id.radio_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                //获取变更后的选中项的ID
+                int radioButtonId = radioGroup.getCheckedRadioButtonId();
+                //根据ID获取RadioButton的实例
+                rb = MainActivity.this.findViewById(radioButtonId);
+                //更新文本内容，以符合选中项
+                tv.setText("本次选择是：" + rb.getText() + "\n");
+            }
+        });
 
     }
 
     @Override
-    public void onClick(View view) {
-        if (view == fbtnClear) {
-            tv.setText("");
-        } else if (view == fbtnDisconnect) {
-            app.disConnect();
-            fbtnDisconnect.setVisibility(View.INVISIBLE);
-            tvState.setText("未链接");
-        } else if (view == btn1) {
-            app.sendMessage("TEST1");
-
-        } else if (view == btn2) {
-            app.sendMessage("TEST2");
-
-        } else if (view == btn3) {
-            app.sendMessage("TEST3");
-
-        } else if (view == btn4) {
-            app.sendMessage("TEST4");
-        } else if (view == btn5) {
-            app.sendMessage("TEST5");
-        } else if (view == btn6) {
-            app.sendMessage("TEST6");
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        if (i == EditorInfo.IME_ACTION_DONE) {
+            int s = Integer.parseInt(etdHeight.getText().toString());
+            seekBar.setProgress(s - 100);
         }
+        return false;
     }
 }

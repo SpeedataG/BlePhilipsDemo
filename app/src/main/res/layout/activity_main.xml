@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/color_white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_white">
 
     <LinearLayout
         android:id="@+id/activity_main"
@@ -14,139 +14,197 @@
 
         <include layout="@layout/view_title_bar_layout" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_state"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_state"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="未连接" />
-
-            <CheckBox
-                android:id="@+id/ck"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="显示心跳" />
-        </LinearLayout>
+            android:text="蓝牙未连接" />
 
         <ImageView
             android:layout_width="fill_parent"
-            android:layout_height="150dp"
-            android:src="@drawable/icon_background" />
-
-        <EditText
-            android:id="@+id/et_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/btn_send"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="click"
-            android:text="发送"
-            android:visibility="gone" />
-
+            android:layout_height="120dp"
+            android:src="@drawable/background" />
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@style/TextStyle"
-
-                android:background="@drawable/button_bc_selector"
-                android:text="TEST1" />
-
-            <Button
-                android:id="@+id/btn2"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@style/TextStyle"
-
-                android:background="@drawable/button_bc_selector"
-                android:text="TEST2" />
-            <Button
-                android:id="@+id/btn3"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@style/TextStyle"
-
-                android:background="@drawable/button_bc_selector"
-                android:text="TEST3" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <SeekBar
+                android:id="@+id/seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:indeterminate="false"
+                android:max="100" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Setting Height:"
+                    android:textColor="@color/color_black"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/etd_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp20"
+                    android:layout_marginRight="10dp"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textColor="@color/color_black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CM"
+                    android:textColor="@color/color_black"
+                    android:textSize="20sp" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Scan body parts"
+                android:textColor="@color/color_black"
+                android:textSize="20sp" />
+
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/btn_head"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Head" />
+
+                <RadioButton
+                    android:id="@+id/btn_stomatch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Stomatch" />
+
+                <RadioButton
+                    android:id="@+id/btn_butt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Butt" />
+
+                <RadioButton
+                    android:id="@+id/btn_foot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Foot" />
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Run and Stop"
+                android:textColor="@color/color_black"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_run"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_bc_selector"
+                    android:text="run" />
+
+                <Button
+                    android:id="@+id/btn_stop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:background="@drawable/button_bc_selector"
+                    android:text="stop" />
+
+                <Button
+                    android:id="@+id/btn_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:background="@drawable/button_bc_selector"
+                    android:text="Test" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn4"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@style/TextStyle"
-
-                android:background="@drawable/button_bc_selector"
-                android:text="TEST4" />
-
-            <Button
-                android:id="@+id/btn5"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@style/TextStyle"
-                android:background="@drawable/button_bc_selector"
-                android:text="TEST5" />
-            <Button
-                android:id="@+id/btn6"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@style/TextStyle"
-                android:background="@drawable/button_bc_selector"
-                android:text="TEST6" />
         </LinearLayout>
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="接收区域：" />
+            android:text="接收区域："
+            android:textColor="@color/color_black"
+            android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tv_id"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </ScrollView>
     </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        app:srcCompat="@drawable/icon_search" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_disconnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="390dp"
         android:visibility="invisible"
         app:srcCompat="@drawable/icon_disconnect" />
 
@@ -155,6 +213,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="190dp"
         app:srcCompat="@drawable/icon_clear" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:srcCompat="@drawable/icon_search" />
 </FrameLayout>

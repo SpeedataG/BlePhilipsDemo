@@ -1,15 +1,10 @@
 package com.example.myblooth;
 
-import android.app.AlertDialog;
 import android.app.Application;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.os.Looper;
 import android.os.SystemClock;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.example.myblooth.act.MainActivity;
 import com.example.myblooth.callback.MesCallBack;
 import com.example.myblooth.utils.MyLogger;
 
@@ -55,28 +50,9 @@ public class MyApp extends Application {
         this.mesCallBack = mesCallBack;
     }
 
-    HeardThread heardThread;
-
     @Override
     public void onCreate() {
         super.onCreate();
-        heardThread = new HeardThread();
-        heardThread.start();
-    }
-
-    public class HeardThread extends Thread {
-        @Override
-        public void run() {
-            super.run();
-            while (!isInterrupted()) {
-                sendMessage("heart");
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
     /**
@@ -84,11 +60,12 @@ public class MyApp extends Application {
      */
     public void disConnect() {
         logger.d("disConnect -1");
-
         if (transferSocket != null) {
             try {
                 transferSocket.close();
                 transferSocket = null;
+                mesCallBack.isConnect(false);
+
                 logger.d("disConnect close");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -165,12 +142,27 @@ public class MyApp extends Application {
 
             // Start listening for messages.
 
-            listenForMessages(clientSocket);
+//            listenForMessages(clientSocket);
 
             // Add a reference to the socket used to send messages.
         } catch (IOException e) {
             logger.e("Blueooth client I/O Exception", e);
             mesCallBack.shwoErrorMsg("ERROR" + e.getMessage());
+        }
+    }
+
+    public void sendMessageByte(byte[] bytes) {
+        OutputStream outStream;
+        try {
+            if (transferSocket != null) {
+                logger.d("send start");
+                outStream = transferSocket.getOutputStream();
+                outStream.write(bytes);
+                logger.d("send finish");
+            }
+        } catch (IOException e) {
+            logger.e(e.getMessage());
+            mesCallBack.isConnect(false);
         }
     }
 
@@ -214,8 +206,5 @@ public class MyApp extends Application {
                 e.printStackTrace();
             }
         }
-        if (heardThread != null)
-            heardThread.isInterrupted();
-        heardThread = null;
     }
 }
